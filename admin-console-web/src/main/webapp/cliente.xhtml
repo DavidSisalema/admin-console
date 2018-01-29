@@ -6,63 +6,95 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-        <ui:composition template="/templates/plantilla.xhtml">
-            <ui:define name="contenido">
-                <p:panel header="Administracion Cliente" >
-                    <p:dataTable value="#{clienteBean.clienteList}" var="cliente"
-                                 rows="5" paginator="true" paginatorPosition="bottom" selectionMode="single"
-                                 selection="#{clienteBean.clienteSel}" rowKey="#{cliente.ruc}">
-                        <p:ajax event="rowSelect" update="@form" />
-                        <p:ajax event="rowUnselect" update="@form" />
-                        <f:facet name="header">
-                            Listado de Clientes
-                        </f:facet>
-                        <p:column headerText="RUC" sortBy="#{cliente.ruc}">
-                            #{cliente.ruc}
-                        </p:column>
-                        <p:column headerText="Razon Social" >
-                            #{cliente.razonSocial}
-                        </p:column>
-                        <f:facet name="footer">
-                            Registros Totales: #{clienteBean.clienteList.size()}
-                        </f:facet>
-                    </p:dataTable>
-                    <p:spacer height="10px"/>
-                    <p:commandButton value="Nuevo" actionListener="#{clienteBean.nuevo()}" update="@form"/>
-                    <p:commandButton value="Modificar" actionListener="#{clienteBean.modificar()}" update="@form" disabled="#{clienteBean.clienteSel == null}"/>
-                    <p:commandButton value="Eliminar" disabled="#{clienteBean.clienteSel == null}"/>
-                    <p:commandButton value="Detalles" actionListener="#{clienteBean.consultar()}" update="@form" disabled="#{clienteBean.clienteSel == null}"/>
-                    <p:spacer height="10px"/>
-                    <p:panel header="#{clienteBean.tituloPanel}" rendered="#{clienteBean.enNuevo or clienteBean.enModificar or clienteBean.enConsulta}">
-                        <p:panelGrid columns="3">
-                            <p:outputLabel for="ruc" value="RUC" />
-                            <p:inputText id="ruc" value="#{clienteBean.cliente.ruc}" required="true" disabled="#{clienteBean.enModificar or clienteBean.enConsulta}"/>
-                            <p:message for="ruc" />
-                            <p:outputLabel for="razonSocial" value="Razon Social" />
-                            <p:inputText id="razonSocial" value="#{clienteBean.cliente.razonSocial}" required="true" readonly ="#{clienteBean.enConsulta}" />
-                            <p:message for="razonSocial" />
-                            <p:outputLabel for="nombreComercial" value="Nombre Comercial" />
-                            <p:inputText id="nombreComercial" value="#{clienteBean.cliente.nombreComercial}" required="false" readonly ="#{clienteBean.enConsulta}" />
-                            <p:message for="nombreComercial" />
-                            <p:outputLabel for="direccion" value="Direccion" />
-                            <p:inputText id="direccion" value="#{clienteBean.cliente.direccion}" required="true" readonly ="#{clienteBean.enConsulta}" />
-                            <p:message for="direccion" />
-                            <p:outputLabel for="personaContacto" value="Persona Contacto" />
-                            <p:inputText id="personaContacto" value="#{clienteBean.cliente.personaContacto}" required="true" readonly ="#{clienteBean.enConsulta}" />
-                            <p:message for="personaContacto" />
-                            <p:outputLabel for="mailContacto" value="Mail" />
-                            <p:inputText id="mailContacto" value="#{clienteBean.cliente.mailContacto}" required="true" readonly ="#{clienteBean.enConsulta}" />
-                            <p:message for="mailContacto" />
-                            <p:outputLabel for="fechaRegistro" value="Fecha Registro" />
-                            <p:calendar id="fechaRegistro" value="#{clienteBean.cliente.fechaRegistro}" showOn="button" required="true" readonly ="#{clienteBean.enConsulta}"/>
-                            <p:message for="fechaRegistro" />
-                        </p:panelGrid>
-                        <p:spacer height="5px"/>
-                        <p:commandButton value="Aceptar" actionListener="#{clienteBean.guardar()}" update="@form" rendered="#{not clienteBean.enConsulta}" />
-                        <p:commandButton value="Cancelar" actionListener="#{clienteBean.cancelar()}" update="@form" immediate="true"/>
-                    </p:panel>
-                    <p:messages globalOnly="true" showSummary="true" showDetail="true"  />
-                </p:panel>
-            </ui:define>
-        </ui:composition>
+    <ui:composition template="/templates/plantilla.xhtml">
+        <ui:define name="contenido">
+            <p:panel  header="Admnistracion de Clientes">
+                <p:panel id="BusquedaCliente"   header="Filtros de Clientes">
+                    <p:panelGrid columns="4">
+                        <p:outputLabel for="filtro" value="Filtro: "/>
+                        <p:selectOneMenu id="tipoFiltro" value="#{clienteBean.tipoFiltro}" >
+                            <p:ajax update="BusquedaCliente" />
+                            <f:selectItem itemLabel="RUC" itemValue="RUC" />
+                            <f:selectItem itemLabel="Razon Social" itemValue="RS" />
+                        </p:selectOneMenu>                            
+                        <p:inputText id="filtro" value="#{clienteBean.filtro}" rendered="#{'RUC' eq clienteBean.tipoFiltro}" />      
+                        <p:inputText id="filtro1" value="#{clienteBean.filtro}" rendered="#{'RS' eq clienteBean.tipoFiltro}" />                       
+                        <p:commandButton value="Buscar" actionListener="#{clienteBean.buscar()}" update="@form" />
+                    </p:panelGrid>
+
+                </p:panel>            
+                <p:dataTable value="#{clienteBean.clienteList}" var="cliente"
+                             rows="5" paginator="true" paginatorPosition="bottom" selectionMode="single"
+                             selection="#{clienteBean.clienteSel}" rowKey="#{cliente.ruc}">
+                    <p:ajax event="rowSelect" update="@form" />
+                    <p:ajax event="rowUnselect" update="@form" />
+                    <f:facet name="header">
+                        Listado de Clientes
+                    </f:facet>
+                    <p:column headerText="RUC" sortBy="#{cliente.ruc}">
+                        #{cliente.ruc}
+                    </p:column>
+                    <p:column headerText="Razon Social" >
+                        #{cliente.razonSocial}
+                    </p:column>
+                    <p:column headerText="Nombre Comercial" >
+                        #{cliente.nombreComercial}
+                    </p:column>
+                    <p:column headerText="Direccion" >
+                        #{cliente.direccion}
+                    </p:column>                        
+                    <p:column headerText="Contacto" >
+                        #{cliente.personaContacto}
+                    </p:column>
+                    <p:column headerText="Mail Contacto" >
+                        #{cliente.mailContacto}
+                    </p:column>
+                    <p:column headerText="Fecha de Registro" >
+                        <h:outputText value="#{cliente.fechaRegistro}">
+                            <f:convertDateTime pattern="yyyy-MM-dd HH:mm"></f:convertDateTime>
+                        </h:outputText>                            
+                    </p:column>                        
+                    <f:facet name="footer">
+                        Registros Totales: #{clienteBean.clienteList.size()}
+                    </f:facet>
+                </p:dataTable>
+                <p:spacer height="10px"/>
+                <p:commandButton value="Nuevo" actionListener="#{clienteBean.nuevo()}" update="@form"/>
+                <p:commandButton value="Modificar" actionListener="#{clienteBean.modificar()}" update="@form" disabled="#{clienteBean.clienteSel == null}"/>
+                <p:commandButton value="Eliminar" actionListener="#{clienteBean.eliminar()}" update="@form" disabled="#{clienteBean.clienteSel == null}"/>
+                <p:commandButton value="Detalles" actionListener="#{clienteBean.consultar()}" update="@form" disabled="#{clienteBean.clienteSel == null}"/>
+                <p:spacer height="10px"/>
+            </p:panel>
+            <p:panel header="#{clienteBean.tituloPanel}" rendered="#{clienteBean.enNuevo or clienteBean.enModificar or clienteBean.enConsulta}">
+                <p:panelGrid columns="3">
+                    <p:outputLabel for="ruc" value="RUC" />
+                    <p:inputText id="ruc" value="#{clienteBean.cliente.ruc}" required="true" disabled="#{clienteBean.enModificar or clienteBean.enConsulta}"/>
+                    <p:message for="ruc" />
+                    <p:outputLabel for="razonSocial" value="Razon Social" />
+                    <p:inputText id="razonSocial" value="#{clienteBean.cliente.razonSocial}" required="true" readonly ="#{clienteBean.enConsulta}" />
+                    <p:message for="razonSocial" />
+                    <p:outputLabel for="nombreComercial" value="Nombre Comercial" />
+                    <p:inputText id="nombreComercial" value="#{clienteBean.cliente.nombreComercial}" required="false" readonly ="#{clienteBean.enConsulta}" />
+                    <p:message for="nombreComercial" />
+                    <p:outputLabel for="direccion" value="Direccion" />
+                    <p:inputText id="direccion" value="#{clienteBean.cliente.direccion}" required="true" readonly ="#{clienteBean.enConsulta}" />
+                    <p:message for="direccion" />
+                    <p:outputLabel for="personaContacto" value="Persona Contacto" />
+                    <p:inputText id="personaContacto" value="#{clienteBean.cliente.personaContacto}" required="true" readonly ="#{clienteBean.enConsulta}" />
+                    <p:message for="personaContacto" />
+                    <p:outputLabel for="mailContacto" value="Mail" />
+                    <p:inputText id="mailContacto" value="#{clienteBean.cliente.mailContacto}" required="true" readonly ="#{clienteBean.enConsulta}" />
+                    <p:message for="mailContacto" />
+                    <p:outputLabel for="fechaRegistro" value="Fecha Registro" />
+                    <p:calendar id="fechaRegistro" value="#{clienteBean.cliente.fechaRegistro}" showOn="button" required="true" readonly ="#{clienteBean.enConsulta}"/>
+                    <p:message for="fechaRegistro" />
+                </p:panelGrid>
+                <p:spacer height="5px"/>
+                <p:commandButton value="Aceptar" actionListener="#{clienteBean.guardar()}" update="@form" rendered="#{not clienteBean.enConsulta}" />
+                <p:commandButton value="Cancelar" actionListener="#{clienteBean.cancelar()}" update="@form" immediate="true"/>
+            </p:panel>
+            <p:messages globalOnly="true" showSummary="true" showDetail="true"  />
+            
+        </ui:define>
+    </ui:composition>
 </html>

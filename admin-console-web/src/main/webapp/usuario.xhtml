@@ -58,7 +58,7 @@
                 <p:spacer height="10px"/>
                 <p:commandButton value="Nuevo" actionListener="#{usuarioBean.nuevo()}" update="@form" disabled="#{usuarioBean.enFormulario}"/>
                 <p:commandButton value="Modificar" actionListener="#{usuarioBean.modificar()}" update="@form" disabled="#{usuarioBean.usuarioSel == null || usuarioBean.enFormulario}"/>
-                <p:commandButton value="Eliminar" disabled="#{usuarioBean.usuarioSel == null}"/>
+                <p:commandButton value="Eliminar" actionListener="#{usuarioBean.eliminar()}" update="@form" disabled="#{usuarioBean.usuarioSel == null}"/>
                 <p:commandButton value="Detalles" actionListener="#{usuarioBean.consultar()}" update="@form" disabled="#{usuarioBean.usuarioSel == null || usuarioBean.enFormulario}"/>
                 <p:spacer height="10px"/>
                 <p:panel header="#{usuarioBean.tituloPanel}" rendered="#{usuarioBean.enFormulario}">

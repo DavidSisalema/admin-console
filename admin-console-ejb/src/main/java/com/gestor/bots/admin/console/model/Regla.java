@@ -70,11 +70,6 @@ public class Regla implements Serializable {
     @JoinColumn(name = "COD_BOT", referencedColumnName = "COD_BOT", insertable = false, updatable = false) 
     private Bot bot;
 
-    /** Propiedad  entrenamientoReglas representa una relación de uno a muchos con la Entidad EntrenamientoRegla.*/;
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="regla")
-    private List<EntrenamientoRegla> entrenamientoReglas;
-    
-
     /**
      * Crea una nueva instancia de la entidad Regla.
      */
@@ -204,18 +199,6 @@ public class Regla implements Serializable {
      *  
      * @return el valor asignado a la propiedad entrenamientoReglas 
      */ 
-    public List<EntrenamientoRegla> getEntrenamientoReglas() { 
-        return entrenamientoReglas; 
-    } 
-     
-    /** 
-     * Asigna un valor a la propiedad entrenamientoReglas, relacionado con la entidad EntrenamientoRegla. 
-     *  
-     * @param entrenamientoReglas el valor a ser asignado a la propiedad entrenamientoReglas 
-     */ 
-    public void setEntrenamientoReglas(List<EntrenamientoRegla> entrenamientoReglas) { 
-        this.entrenamientoReglas = entrenamientoReglas; 
-    }
 
 
     /** 

@@ -7,6 +7,7 @@ package com.gestor.bots.admin.console.servicio;
 
 import com.gestor.bots.admin.console.dao.ClienteDAO;
 import com.gestor.bots.admin.console.model.Cliente;
+import com.gestor.bots.admin.console.model.Usuario;
 import com.gestor.bots.exception.CreacionException;
 import com.gestor.bots.exception.EliminacionException;
 import com.gestor.bots.exception.ModificacionException;
@@ -25,7 +26,19 @@ public class ClienteService {
     public List<Cliente> obtenerTodos() {
         return this.clienteDAO.findAll();
     }
-    
+
+    public List<Cliente> buscar(String tipoFiltro, String valor) {
+        System.err.println("El valor es: "+valor+", el tipo es:"+tipoFiltro);
+        Cliente cliente = new Cliente();
+        if ("RUC".equals(tipoFiltro)) {
+            cliente.setRuc(valor);
+        } else if ("EST".equals(tipoFiltro)) {
+            cliente.setRazonSocial(valor);
+            System.err.println("La Razón Social es:"+cliente.getRazonSocial());
+        } 
+        return  this.clienteDAO.find(cliente);
+    }
+        
     public void crear(Cliente cliente)  {
         try {
             this.clienteDAO.insert(cliente);

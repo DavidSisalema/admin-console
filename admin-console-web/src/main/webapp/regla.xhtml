@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:composition template="/templates/plantilla.xhtml">
+        <ui:define name="contenido">
+            <p:panel  header="Admnistracion de Reglas">
+                <p:panel id="BusquedaRegla"   header="Filtros de Reglas">
+                    <p:panelGrid columns="4">
+                        <p:outputLabel for="filtro" value="Filtro: "/>
+                        <p:selectOneMenu id="tipoFiltro" value="#{reglaBean.tipoFiltro}" >
+                            <p:ajax update="BusquedaRegla" />
+                            <f:selectItem itemLabel="Código" itemValue="COD" />
+                            <f:selectItem itemLabel="Nombre" itemValue="NOM" />
+                        </p:selectOneMenu>                            
+                        <p:inputText id="filtro" value="#{reglaBean.filtro}" rendered="#{'COD' eq reglaBean.tipoFiltro}" />      
+                        <p:inputText id="filtro1" value="#{reglaBean.filtro}" rendered="#{'NOM' eq reglaBean.tipoFiltro}" />                       
+                        <p:commandButton value="Buscar" actionListener="#{reglaBean.buscar()}" update="@form" />
+                    </p:panelGrid>
+
+                </p:panel>      
+                <p:dataTable value="#{reglaBean.reglaList}" var="regla"
+                             rows="5" paginator="true" paginatorPosition="bottom" selectionMode="single"
+                             selection="#{reglaBean.reglaSel}" rowKey="#{regla.codigo}">
+                    <p:ajax event="rowSelect" update="@form" />
+                    <p:ajax event="rowUnselect" update="@form" />
+                    <f:facet name="header">
+                        Listado de Reglas
+                    </f:facet>
+                    <p:column headerText="Codigo" sortBy="#{regla.codigo}">
+                        #{regla.codigo}
+                    </p:column>
+                    <p:column headerText="Nombre" >
+                        #{regla.nombre}
+                    </p:column>
+                    <p:column headerText="Bot" >
+                        #{regla.bot.nombre}
+                    </p:column>                    
+                    <p:column headerText="Categoria" >
+                        #{regla.categoria}
+                    </p:column>                        
+                    <p:column headerText="Estado">
+                        #{regla.estado.etiqueta}
+                    </p:column>      
+
+                    <f:facet name="footer">
+                        Registros Totales: #{reglaBean.reglaList.size()}
+                    </f:facet>
+                </p:dataTable>
+                <p:spacer height="10px"/>
+                <p:commandButton value="Nuevo" actionListener="#{reglaBean.nuevo()}" update="@form"/>
+                <p:commandButton value="Modificar" actionListener="#{reglaBean.modificar()}" update="@form" disabled="#{reglaBean.reglaSel == null}"/>
+                <p:commandButton value="Eliminar" actionListener="#{reglaBean.eliminar()}" update="@form"  disabled="#{reglaBean.reglaSel == null}"/>
+                <p:commandButton value="Detalles" actionListener="#{reglaBean.consultar()}" update="@form" disabled="#{reglaBean.reglaSel == null}"/>
+                <p:spacer height="10px"/>
+            </p:panel>
+            <p:panel header="#{reglaBean.tituloPanel}" rendered="#{reglaBean.enNuevo or reglaBean.enModificar or reglaBean.enConsulta}">
+                <p:panelGrid columns="3">
+                    <p:outputLabel for="codigo" value="Codigo" />
+                    <p:inputText id="codigo" value="#{reglaBean.regla.codigo}" required="true" disabled="#{reglaBean.enModificar or reglaBean.enConsulta}"/>
+                    <p:message for="codigo" />
+                    <p:outputLabel for="codigoBot" value="Código Bot:" />
+                    <p:selectOneMenu id="codigoBot" value="#{reglaBean.regla.codigoBot}">
+                        <f:selectItems value="#{reglaBean.botList}" var="bot1" itemLabel="#{bot1.nombre}" itemValue="#{bot1.codigo}" />
+                    </p:selectOneMenu>
+                    <p:message for="codigoBot" />
+                    <p:outputLabel for="nombre" value="Nombre" />
+                    <p:inputText id="nombre" value="#{reglaBean.regla.nombre}" required="true" readonly ="#{reglaBean.enConsulta}" />
+                    <p:message for="nombre" />
+                    <p:outputLabel for="categoria" value="Categoria" />
+                    <p:inputText id="categoria" value="#{reglaBean.regla.categoria}" required="true" readonly ="#{reglaBean.enConsulta}" />
+                    <p:message for="categoria" />
+                    <p:outputLabel for="estado" value="Estado" />
+                    <p:selectOneMenu value="#{reglaBean.regla.estado}" id="estado" >
+                        <f:selectItem itemValue="ACT" itemLabel="Activo" />
+                        <f:selectItem itemValue="INA" itemLabel="Inactivo" />
+                    </p:selectOneMenu>>
+                    <p:message for="estado" />  
+                </p:panelGrid>
+                <p:spacer height="5px"/>
+                <p:commandButton value="Aceptar" actionListener="#{reglaBean.guardar()}" update="@form" rendered="#{not reglaBean.enConsulta}" />
+                <p:commandButton value="Cancelar" actionListener="#{reglaBean.cancelar()}" update="@form" immediate="true"/>
+            </p:panel>
+            <p:messages globalOnly="true" showSummary="true" showDetail="true"  />
+
+        </ui:define>
+    </ui:composition>
+</html>

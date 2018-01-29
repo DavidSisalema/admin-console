@@ -30,7 +30,7 @@
                     <p:spacer height="10px"/>
                     <p:commandButton value="Nuevo" actionListener="#{socialMediaBean.nuevo()}" update="@form"/>
                     <p:commandButton value="Modificar" actionListener="#{socialMediaBean.modificar()}" update="@form" disabled="#{socialMediaBean.socialMediaSel == null}"/>
-                    <p:commandButton value="Eliminar" disabled="#{socialMediaBean.socialMediaSel == null}"/>
+                    <p:commandButton value="Eliminar" actionListener="#{socialMediaBean.eliminar()}" update="@form" disabled="#{socialMediaBean.socialMediaSel == null}"/>
                     <p:commandButton value="Detalles" actionListener="#{socialMediaBean.consultar()}" update="@form" disabled="#{socialMediaBean.socialMediaSel == null}"/>
                     <p:spacer height="10px"/>
                     <p:panel header="#{socialMediaBean.tituloPanel}" rendered="#{socialMediaBean.enNuevo or socialMediaBean.enModificar or socialMediaBean.enConsulta}">

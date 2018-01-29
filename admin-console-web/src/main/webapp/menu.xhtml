@@ -8,8 +8,9 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
         <ui:composition template="/templates/plantilla.xhtml">
             <ui:define name="contenido">
-                <h1>Menu Principal</h1>
-                <h3>Bienvenido: #{credencialesBean.user.nombre}</h3>
+                <h1>#{etiquetas.men}</h1>
+                <h3>#{etiquetas.bie}: #{credencialesBean.user.nombre}</h3>
+                <img src="#{facesContext.externalContext.requestContextPath}/images/lazy-Bot.jpg" height="50%" class="img-responsive" />
             </ui:define>
         </ui:composition>
 </html>

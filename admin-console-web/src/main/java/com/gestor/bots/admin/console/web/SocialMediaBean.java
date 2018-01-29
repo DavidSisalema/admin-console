@@ -1,6 +1,6 @@
-
 package com.gestor.bots.admin.console.web;
 
+import com.gestor.bots.admin.console.dao.SocialMediaDAO;
 import com.gestor.bots.admin.console.model.SocialMedia;
 import com.gestor.bots.admin.console.servicio.SocialMediaService;
 import com.gestor.bots.admin.console.web.common.BaseBean;
@@ -8,6 +8,7 @@ import com.gestor.bots.admin.console.web.common.FacesUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -22,7 +23,7 @@ import org.apache.commons.beanutils.BeanUtils;
 public class SocialMediaBean extends BaseBean implements Serializable {
 
     private static final String ENTIDAD = "Red Social";
-    
+
     @Inject
     private SocialMediaService socialMediaService;
 
@@ -30,7 +31,7 @@ public class SocialMediaBean extends BaseBean implements Serializable {
 
     private SocialMedia socialMedia;
     private SocialMedia socialMediaSel;
-    
+
     @PostConstruct
     public void init() {
         this.socialMediaList = this.socialMediaService.obtenerTodos();
@@ -49,8 +50,18 @@ public class SocialMediaBean extends BaseBean implements Serializable {
         try {
             BeanUtils.copyProperties(this.socialMedia, this.socialMediaSel);
         } catch (Exception ex) {
-            FacesUtil.addMessageError(null, "No se puede modificar la "+ENTIDAD);
+            FacesUtil.addMessageError(null, "No se puede modificar la " + ENTIDAD);
         }
+    }
+
+    public void eliminar() {
+        try {
+            this.socialMediaService.eliminar(socialMediaSel);
+        } catch (Exception ex) {
+            FacesUtil.addMessageError(null, "No se puede eliminar la " + ENTIDAD + this.socialMediaSel.getCodigo());
+            super.cancelar();
+        }
+        this.socialMediaList = this.socialMediaService.obtenerTodos();
     }
 
     @Override
@@ -66,7 +77,7 @@ public class SocialMediaBean extends BaseBean implements Serializable {
                 FacesUtil.addMessageInfo("Se modifico la red social: " + this.socialMedia.getNombre());
                 super.cancelar();
             } catch (Exception e) {
-                FacesUtil.addMessageError(null, "Ocurrio un error al modificar la red social: "+this.socialMedia);
+                FacesUtil.addMessageError(null, "Ocurrio un error al modificar la red social: " + this.socialMedia);
             }
         } else {
             try {
@@ -74,10 +85,10 @@ public class SocialMediaBean extends BaseBean implements Serializable {
                 FacesUtil.addMessageInfo("Se creo la red social: " + this.socialMedia.getNombre());
                 super.cancelar();
             } catch (Exception e) {
-                FacesUtil.addMessageError(null, "No se pudo crear la red social: "+this.socialMedia);
+                FacesUtil.addMessageError(null, "No se pudo crear la red social: " + this.socialMedia);
             }
         }
-        
+        this.socialMediaList = this.socialMediaService.obtenerTodos();
     }
 
     public List<SocialMedia> getSocialMediaList() {
@@ -99,9 +110,9 @@ public class SocialMediaBean extends BaseBean implements Serializable {
     public void setSocialMediaSel(SocialMedia socialMediaSel) {
         this.socialMediaSel = socialMediaSel;
     }
-    
+
     public String getTituloPanel() {
-        return super.tituloPanel+SocialMediaBean.ENTIDAD;
+        return super.tituloPanel + SocialMediaBean.ENTIDAD;
     }
 
 }

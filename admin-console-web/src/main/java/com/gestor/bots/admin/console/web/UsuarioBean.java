@@ -65,6 +65,16 @@ public class UsuarioBean extends BaseBean implements Serializable  {
         }
     }
 
+    public void eliminar() {
+        try {
+            this.usuarioService.eliminar(usuarioSel);
+        } catch (Exception ex) {
+            FacesUtil.addMessageError(null, "No se puede eliminar la " + ENTIDAD + this.usuarioSel.getNombre());
+            super.cancelar();
+        }
+        this.usuarioList = this.usuarioService.obtenerTodos(); 
+    }
+    
     @Override
     public void consultar() {
         super.consultar();

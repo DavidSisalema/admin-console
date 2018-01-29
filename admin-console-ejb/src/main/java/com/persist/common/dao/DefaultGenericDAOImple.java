@@ -181,7 +181,7 @@ public class DefaultGenericDAOImple<T, ID extends Serializable> implements
      */
     @Override
     public void remove(T entity) {
-        getEntityManager().remove(entity);
+        getEntityManager().remove(getEntityManager().merge(entity));
     }
 
     /**

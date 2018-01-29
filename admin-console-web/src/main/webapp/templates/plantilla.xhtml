@@ -20,23 +20,24 @@
             </div>
             <h:form>
             <p:menubar >
-                <p:submenu label="Catalogos" icon="fa-pagelines">
-                    <p:menuitem value="Redes Sociales" action="socialMedia" icon="fa-wechat"/>
+                <p:submenu label="#{etiquetas.cat}" icon="fa-pagelines">
+                    <p:menuitem value="#{etiquetas.red}" action="socialMedia" icon="fa-wechat"/>
                 </p:submenu>
-                <p:submenu label="Usuarios" icon="fa-users">
-                    <p:menuitem value="Usuarios" action="usuario" icon="fa-user"/>
+                <p:submenu label="#{etiquetas.usu}" icon="fa-users">
+                    <p:menuitem value="#{etiquetas.usu}" action="usuario" icon="fa-user"/>
                 </p:submenu>
-                <p:submenu label="Clientes" icon="fa-suitcase">
-                    <p:menuitem value="Clientes" action="cliente" icon="fa-user-plus"/>
+                <p:submenu label="#{etiquetas.cli}" icon="fa-suitcase">
+                    <p:menuitem value="#{etiquetas.cli}" action="cliente" icon="fa-user-plus"/>
                 </p:submenu>
-                <p:submenu label="Bots" icon="fa-android">
-                    <p:menuitem value="Bots" action="bots" icon="fa-cube"/>
-                    <p:menuitem value="Reglas" action="index" icon="fa-cogs"/>
+                <p:submenu label="#{etiquetas.rob}" icon="fa-android">
+                    <p:menuitem value="#{etiquetas.rob}" action="bot" icon="fa-cube"/>
+                    <p:menuitem value="#{etiquetas.reg}" action="regla" icon="fa-cogs"/>
+                    <p:menuitem value="#{etiquetas.ent}" action="entrenamientoRegla" icon="fa-cogs"/>
                 </p:submenu>
                 <f:facet name="options">
                     <p:menuButton value="#{credencialesBean.user.nombre}" icon="fa-user-md">
-                        <p:menuitem value="Preferencias" url="#" icon="fa-cog"/>
-                        <p:menuitem value="Salir" url="#" icon="fa-sign-out"/>
+                        <p:menuitem value="#{etiquetas.pre}" url="#" icon="fa-cog"/>
+                        <p:menuitem value="#{etiquetas.sal}" url="index.xhtml" icon="fa-sign-out"/>
                     </p:menuButton>
                 </f:facet>
             </p:menubar>
